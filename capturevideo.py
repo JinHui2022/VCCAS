@@ -106,22 +106,22 @@ def start_log_video(num,name, width, height, fps):
 
 #获取摄像头对应的ID和名称信息，返回值为字典
 def get_cameras_status(filename):
-        camera_name_id={}
-        camera_num=0
-        if os.path.exists(filename):
-            text=os.popen(filename).read()  #读取运行结果
-            lines=text.split('\n')         #第一行为相机个数，剩下行为ID和名称
-            camera_num=int(lines[0].split(':')[1])   #得到相机个数
-            if camera_num==0: #当前没有摄像机
-                print('当前程序没有检测到摄像机的存在，请检查连接情况！')
-            else:
-                for i in range(1,camera_num+1):
-                    NAME=lines[i].split(':')[3]+str(i)
-                    ID=int(lines[i].split(':')[1])
-                    camera_name_id[NAME]=ID
+    camera_name_id={}
+    camera_num=0
+    if os.path.exists(filename):
+        text=os.popen(filename).read()  #读取运行结果
+        lines=text.split('\n')         #第一行为相机个数，剩下行为ID和名称
+        camera_num=int(lines[0].split(':')[1])   #得到相机个数
+        if camera_num==0: #当前没有摄像机
+            print('当前程序没有检测到摄像机的存在，请检查连接情况！')
         else:
-            print(filename+'文件不存在，请联系开发人员！')
-        return text,camera_num,camera_name_id
+            for i in range(1,camera_num+1):
+                NAME=lines[i].split(':')[3]+str(i)
+                ID=int(lines[i].split(':')[1])
+                camera_name_id[NAME]=ID
+    else:
+        print(filename+'文件不存在，请联系开发人员！')
+    return text,camera_num,camera_name_id
 
 #检测摄像机的状态，若有新摄像机插拔，则重启程序
 def check_new_device():
@@ -146,6 +146,8 @@ global thread_stop_flag
 thread_stop_flag=False
 
 def videocapture():
+    global thread_stop_flag
+
     # 开始摄像头状态检测线程
     t = threading.Thread(target=check_new_device, args=())
     t.setDaemon(True)
@@ -172,5 +174,4 @@ def videocapture():
             if not isalive:
                 break
 
-    # print('debug123')
     thread_stop_flag=False
