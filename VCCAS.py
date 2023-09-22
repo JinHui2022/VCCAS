@@ -1,5 +1,5 @@
-from capturevideo import *
-from videocorrect import *
+from .capturevideo import *
+from .videocorrect import *
 import os
 
 if __name__=="__main__":

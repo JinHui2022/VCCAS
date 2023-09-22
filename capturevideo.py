@@ -173,5 +173,6 @@ def videocapture():
                 isalive=isalive | flag
             if not isalive:
                 break
+        thread_stop_flag=False
 
-    thread_stop_flag=False
+# videocapture()
