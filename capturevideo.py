@@ -175,4 +175,4 @@ def videocapture():
                 break
         thread_stop_flag=False
 
-# videocapture()
+videocapture()
